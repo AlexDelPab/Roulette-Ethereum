@@ -5,10 +5,9 @@ contract Roulette {
 	uint256 public minimumBet;
 	uint256 public totalBet;
 	address[] public players;
+    uint80 constant None = uint80(0);
 
-    uint256 []win1 = new uint[]();
-
-	struct Player {
+    struct Player {
         Bet[] bets;
 	}
 
@@ -19,7 +18,7 @@ contract Roulette {
     }
 
 	// The address of the player and => the user info
-	mapping(address => Player) public playerInfo;
+	mapping(address => Player) private playerInfo;
 
 	function Casino(uint256 _minimumBet) public {
 		owner = msg.sender;
@@ -44,7 +43,7 @@ contract Roulette {
 //		require(numberSelected >= 1 && numberSelected <= 10);
 		//Nice to have: check values of array content
 		require(msg.value >= minimumBet);
-        Bet bet = new Bet();
+        Bet bet;
         bet.amountBet = msg.value;
         bet.numberSelected = numberSelected;
         bet.factor = factor;
@@ -61,32 +60,45 @@ contract Roulette {
 
 	// Sends the corresponding ether to each winner depending on the total bets
 	function distributePrizes(uint256 numberWinner) public {
-		address[100] memory winners; // We have to create a temporary in memory array with fixed size
+		Player[100] memory winners; // We have to create a temporary in memory array with fixed size
 		uint256 count = 0; // This is the count for the array of winners
 		for(uint256 i = 0; i < players.length; i++){
 			address playerAddress = players[i];
-            bool x = checkNumberOfWinner(playerInfo[playerAddress].numberSelected);
+			for (uint256 j = 0;j < playerInfo[playerAddress].bets.length; j++){
+//            	Bet[] actualBets = playerInfo[playerAddress].bets;
+//				Bet[] newBets = checkNumberOfWinner(actualBets, numberWinner);
+				checkNumberOfWinner(playerInfo[playerAddress].bets, numberWinner);
+//              playerInfo[playerAddress].bets = newBets;
 
-			if (x){
-				winners[count] = playerAddress;
+                winners[count] = playerInfo[playerAddress];
                 count++;
 			}
-
-			delete playerInfo[playerAddress]; // Delete all the players
 		}
+
 		players.length = 0; // Delete all the players array
         calculatePrizes(winners);
-
 	}
 
-	function checkNumberOfWinner(uint256 [][] numberSelected) private returns(bool){
+	function checkNumberOfWinner(Bet [] bets, uint256 numberWinner) private{
+//        Bet [] wonBets = new Bet[](15);
+		for (uint256 i = 0;i < bets.length; i++){
+			if (contains(bets[i].numberSelected == true)){
+                delete bets[i];
+            }
+		}
 
+//        return wonBets;
 	}
 
-    function calculatePrizes(address[] winners){
-        for (uint256 i = 0; i < winners.length(); i++){
+    function calculatePrizes(address[100] winners){
+        for (uint256 i = 0; i < winners.length; i++){
             if (winners[i] != address(0)){
-
+                for (uint256 j = 0; j < winners[i].bets; j++){
+                    if (winners[i].bets[j] != None){
+                        uint256 bigWin = winners[i].bets[j].amountBet * winners[i].bets[j].factor;
+                        winners[i].transfer(bigWin);
+                    }
+                }
             }
         }
 //        uint256 winnerEtherAmount = totalBet / winners.length; // How much each winner gets
@@ -94,5 +106,15 @@ contract Roulette {
 //            if(winners[j] != address(0)) // Check that the address in this fixed array is not empty
 //                winners[j].transfer(winnerEtherAmount);
 //        }
+    }
+
+    function contains(uint256[] selectedNumbers, uint256 num) {
+        for (uint256 i = 0; i < selectedNumbers.length; i++){
+            if (selectedNumbers[i] == num){
+                return true;
+            }
+        }
+
+        return false;
     }
 }
