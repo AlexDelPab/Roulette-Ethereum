@@ -4,8 +4,7 @@ pragma solidity ^0.4.11;
 import "./oraclizeAPI.sol";
 
 /// @title Contract to bet Ether for a number and win randomly when the number of bets is met.
-/// @author Merunas Grincalaitis
-contract Casino is usingOraclize {
+contract Roulette is usingOraclize {
     address owner;
 
     // The minimum bet a user has to make to participate in the game
@@ -36,7 +35,7 @@ contract Casino is usingOraclize {
 
     /// @notice Constructor that's used to configure the minimum bet per game
     /// @param _minimumBet The minimum bet that each user has to make in order to participate in the game
-    function Casino(uint _minimumBet){
+    function Roulette(uint _minimumBet){
         owner = msg.sender;
 
         if (_minimumBet > 0) minimumBet = _minimumBet;

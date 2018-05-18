@@ -21,8 +21,8 @@ class App extends React.Component {
             this.web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"))
         }
 
-        let casino = JSON.parse(this.readTextFile("/casino-ethereum/build/contracts/Casino.json"));
-        const MyContract = web3.eth.contract(casino["abi"]);
+        let roulette = JSON.parse(this.readTextFile("/Roulette-Ethereum/build/contracts/Roulette.json"));
+        const MyContract = web3.eth.contract(roulette["abi"]);
         this.state.ContractInstance = MyContract.at("0xd1a9d9ac8D7212aa83C22b0d74AC07d9B971339f")
 
         window.a = this.state
