@@ -1,4 +1,5 @@
-const path = require('/Users/alex/Documents/JKU Linz/6. Semester/CE KT/roulette-ethereum/')
+const path = require('path')
+
 module.exports = {
    entry: path.join(__dirname, 'src/js', 'index.js'), // Our frontend will be inside the src folder
    output: {
