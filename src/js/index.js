@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import Web3 from 'web3'
 import './../css/index.css'
-import {Button, ButtonGroup, Row, Col} from 'reactstrap';
+import {Badge, Button, ButtonGroup, Col, Row} from 'reactstrap';
 
 
 class App extends React.Component {
@@ -98,18 +98,7 @@ class App extends React.Component {
     render() {
         return (
             <div className="main-container">
-                <h1>Bet for your best number and win huge amounts of Ether</h1>
-
-                <div className="block">
-                    <b>Number of bets:</b> &nbsp;
-                    <span>{this.state.numberOfBets}</span>
-                </div>
-
-                <div className="block">
-                    <b>Last number winner:</b> &nbsp;
-                    <span>{this.state.lastWinner}</span>
-                </div>
-
+                <h1><Badge color="success">Roulette with Ethereum</Badge></h1>
                 <div className="block">
                     <b>Total ether bet:</b> &nbsp;
                     <span>{this.state.totalBet} ether</span>
@@ -152,23 +141,109 @@ class Roulette extends React.Component {
 
 
     render() {
+        var rows1 = [3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36];
+        var rows2 = [2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35];
+        var rows3 = [1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34];
+
+        var printRow1 = [];
+        var printRow2 = [];
+        var printRow3 = [];
+        for (var i = 1; i <= 36; i++) {
+            var color = "danger";
+
+            if (i % 2 == 0) {
+                color = "success";
+            } else {
+                color = "danger";
+            }
+
+
+            if (rows1.includes(i)) {
+                printRow1.push(
+                    <Col xs="1">
+                        <Button color={color} onClick={() => this.onCheckboxBtnClick(i)}
+                                active={this.state.cSelected.includes({i})}>{i}</Button>
+                    </Col>
+                );
+            }
+
+            if (rows2.includes(i)) {
+                printRow2.push(
+                    <Col xs="1">
+                        <Button color={color} onClick={() => this.onCheckboxBtnClick(i)}
+                                active={this.state.cSelected.includes({i})}>{i}</Button>
+                    </Col>
+                );
+            }
+
+            if (rows3.includes(i)) {
+                printRow3.push(
+                    <Col xs="1">
+                        <Button color={color} onClick={() => this.onCheckboxBtnClick(i)}
+                                active={this.state.cSelected.includes({i})}>{i}</Button>
+                    </Col>
+                );
+            }
+        }
+
         return (
             <div>
                 <Row>
-                    <ButtonGroup>
-                        <Button color="danger" onClick={() => this.onCheckboxBtnClick(1)}
-                                active={this.state.cSelected.includes(1)}>One</Button>
-                        <Button color="danger" onClick={() => this.onCheckboxBtnClick(2)}
-                                active={this.state.cSelected.includes(2)}>Two</Button>
-                        <Button color="danger" onClick={() => this.onCheckboxBtnClick(3)}
-                                active={this.state.cSelected.includes(3)}>Three</Button>
-                    </ButtonGroup>
-                </Row>
-                <Row>
-                    <ButtonGroup>
-                        <Button color="primary" onClick={() => this.onCheckboxBtnClick(3)}
-                                active={this.state.cSelected.includes(3)}>Three</Button>
-                    </ButtonGroup>
+                    <Col>
+                        <Row>
+                            <Col xs="1">
+                                <Button color="success" size="lg" block style={{width: "100%"}}>0</Button>
+                            </Col>
+                            <Col xs="10">
+                                <Row>
+                                    <ButtonGroup>
+                                        {printRow1}
+                                    </ButtonGroup>
+                                </Row>
+                                <Row>
+                                    <ButtonGroup>
+                                        {printRow2}
+                                    </ButtonGroup>
+                                </Row>
+                                <Row>
+                                    <ButtonGroup>
+                                        {printRow3}
+                                    </ButtonGroup>
+                                </Row>
+
+                            </Col>
+                            <Col xs="1">
+                                <Row><Button color="success" style={{width: "100%"}}>2 TO 1</Button></Row>
+                                <Row><Button color="success" style={{width: "100%"}}>2 TO 1</Button></Row>
+                                <Row><Button color="success" style={{width: "100%"}}>2 TO 1</Button></Row>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col xs="1"></Col>
+                            <Col xs="3">
+                                <Button color="success" size="lg" block style={{width: "100%"}}>1st 12</Button>
+                            </Col>
+                            <Col xs="3">
+                                <Button color="success" size="lg" block style={{width: "100%"}}>2nd 12</Button>
+                            </Col>
+                            <Col xs="3">
+                                <Button color="success" size="lg" block style={{width: "100%"}}>3rd 12</Button>
+                            </Col>
+                            <Col xs="1"></Col>
+                        </Row>
+                        <Row>
+                            <Col xs="1"></Col>
+                            <Col xs="2"><Button color="success" size="lg" block style={{width: "100%"}}>1 TO
+                                18</Button></Col>
+                            <Col xs="2"><Button color="success" size="lg" block
+                                                style={{width: "100%"}}>EVEN</Button></Col>
+                            <Col xs="2"><Button color="success" size="lg" block
+                                                style={{width: "100%"}}>ODD</Button></Col>
+                            <Col xs="2"><Button color="success" size="lg" block style={{width: "100%"}}>19 TO
+                                36</Button></Col>
+                            <Col xs="1"></Col>
+                        </Row>
+                    </Col>
                 </Row>
                 <p>Selected: {JSON.stringify(this.state.cSelected)}</p>
             </div>
