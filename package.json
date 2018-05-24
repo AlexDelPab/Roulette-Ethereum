@@ -24,5 +24,9 @@
     "truffle": "^3.4.8",
     "web3": "^0.20.0",
     "webpack": "^3.12.0"
+  },
+  "dependencies": {
+    "bootstrap": "^4.1.1",
+    "reactstrap": "^6.0.1"
   }
 }

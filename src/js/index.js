@@ -2,6 +2,8 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import Web3 from 'web3'
 import './../css/index.css'
+import {Button, ButtonGroup, Row, Col} from 'reactstrap';
+
 
 class App extends React.Component {
     constructor(props) {
@@ -32,12 +34,9 @@ class App extends React.Component {
         let rawFile = new XMLHttpRequest();
         let allText = null;
         rawFile.open("GET", file, false);
-        rawFile.onreadystatechange = function ()
-        {
-            if(rawFile.readyState === 4)
-            {
-                if(rawFile.status === 200 || rawFile.status == 0)
-                {
+        rawFile.onreadystatechange = function () {
+            if (rawFile.readyState === 4) {
+                if (rawFile.status === 200 || rawFile.status == 0) {
                     allText = rawFile.responseText;
                 }
             }
@@ -92,7 +91,6 @@ class App extends React.Component {
             }, (err, result) => {
 
 
-
             })
         }
     }
@@ -123,56 +121,56 @@ class App extends React.Component {
                 </div>
 
                 <hr/>
+                <Roulette/>
+            </div>
 
-                <h2>Vote for the next number</h2>
+        )
+    }
+}
 
-                <label>
-                    <b>How much Ether do you want to bet? <input className="bet-input" ref="ether-bet" type="number" placeholder={this.state.minimumBet}/></b> ether
-                    <br/>
-                </label>
+class Roulette extends React.Component {
+    constructor(props) {
+        super(props);
 
-                <ul>
-                    <li onClick={() => {this.voteNumber(3)}}>3</li>
-                    <li onClick={() => {this.voteNumber(6)}}>6</li>
-                    <li onClick={() => {this.voteNumber(9)}}>9</li>
-                    <li onClick={() => {this.voteNumber(12)}}>12</li>
-                    <li onClick={() => {this.voteNumber(15)}}>15</li>
-                    <li onClick={() => {this.voteNumber(18)}}>18</li>
-                    <li onClick={() => {this.voteNumber(21)}}>21</li>
-                    <li onClick={() => {this.voteNumber(24)}}>24</li>
-                    <li onClick={() => {this.voteNumber(27)}}>27</li>
-                    <li onClick={() => {this.voteNumber(30)}}>30</li>
-                    <li onClick={() => {this.voteNumber(33)}}>33</li>
-                    <li onClick={() => {this.voteNumber(36)}}>36</li>
-                </ul>
-                <ul>
-                    <li onClick={() => {this.voteNumber(2)}}>2</li>
-                    <li onClick={() => {this.voteNumber(5)}}>5</li>
-                    <li onClick={() => {this.voteNumber(8)}}>8</li>
-                    <li onClick={() => {this.voteNumber(11)}}>11</li>
-                    <li onClick={() => {this.voteNumber(14)}}>14</li>
-                    <li onClick={() => {this.voteNumber(17)}}>17</li>
-                    <li onClick={() => {this.voteNumber(20)}}>20</li>
-                    <li onClick={() => {this.voteNumber(23)}}>23</li>
-                    <li onClick={() => {this.voteNumber(26)}}>26</li>
-                    <li onClick={() => {this.voteNumber(29)}}>29</li>
-                    <li onClick={() => {this.voteNumber(32)}}>32</li>
-                    <li onClick={() => {this.voteNumber(35)}}>35</li>
-                </ul>
-                <ul>
-                    <li onClick={() => {this.voteNumber(1)}}>1</li>
-                    <li onClick={() => {this.voteNumber(4)}}>4</li>
-                    <li onClick={() => {this.voteNumber(7)}}>7</li>
-                    <li onClick={() => {this.voteNumber(10)}}>10</li>
-                    <li onClick={() => {this.voteNumber(13)}}>13</li>
-                    <li onClick={() => {this.voteNumber(16)}}>16</li>
-                    <li onClick={() => {this.voteNumber(19)}}>19</li>
-                    <li onClick={() => {this.voteNumber(22)}}>22</li>
-                    <li onClick={() => {this.voteNumber(25)}}>25</li>
-                    <li onClick={() => {this.voteNumber(28)}}>28</li>
-                    <li onClick={() => {this.voteNumber(31)}}>31</li>
-                    <li onClick={() => {this.voteNumber(34)}}>34</li>
-                </ul>
+        this.state = {cSelected: []};
+
+        this.onCheckboxBtnClick = this.onCheckboxBtnClick.bind(this);
+    }
+
+    onCheckboxBtnClick(selected) {
+
+        const index = this.state.cSelected.indexOf(selected);
+        if (index < 0) {
+            this.state.cSelected.push(selected);
+        } else {
+            this.state.cSelected.splice(index, 1);
+        }
+        this.setState({cSelected: [...this.state.cSelected]});
+
+        this.app.voteNumber(selected);
+    }
+
+
+    render() {
+        return (
+            <div>
+                <Row>
+                    <ButtonGroup>
+                        <Button color="danger" onClick={() => this.onCheckboxBtnClick(1)}
+                                active={this.state.cSelected.includes(1)}>One</Button>
+                        <Button color="danger" onClick={() => this.onCheckboxBtnClick(2)}
+                                active={this.state.cSelected.includes(2)}>Two</Button>
+                        <Button color="danger" onClick={() => this.onCheckboxBtnClick(3)}
+                                active={this.state.cSelected.includes(3)}>Three</Button>
+                    </ButtonGroup>
+                </Row>
+                <Row>
+                    <ButtonGroup>
+                        <Button color="primary" onClick={() => this.onCheckboxBtnClick(3)}
+                                active={this.state.cSelected.includes(3)}>Three</Button>
+                    </ButtonGroup>
+                </Row>
+                <p>Selected: {JSON.stringify(this.state.cSelected)}</p>
             </div>
         )
     }
