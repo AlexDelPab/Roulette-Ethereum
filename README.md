@@ -1,10 +1,14 @@
-# dapp-tutorial
+# Roulette-Ethereum with Vue.js
 
-A simple decentralized application in which the user can bet an amount of ether of choice on numbers 1-10.
+Play Roulette with Ethereum.
 
 ## Build Setup
 
+
 ``` bash
+# php storm plugin
+install stylus assist in preferencis -> plugins
+
 # install dependencies
 npm install
 
